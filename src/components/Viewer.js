@@ -18,10 +18,15 @@ const Viewer = () => {
         console.log("Model didn't load. Retrying in 1s.");
         checkMaterials();
       } else {
-        let material = model1.current.model.materials;
-        material.map((material) =>
-          material.pbrMetallicRoughness.setBaseColorFactor(color)
-        );
+        let material = model1.current.model.materials[3];
+
+        let applyPBRTexture = (event) => {
+          material.pbrMetallicRoughness[
+            "baseColorTexture"
+          ].texture.source.setURI(event);
+        };
+
+        applyPBRTexture("./image.png");
       }
     }, 1000);
   };

@@ -97,12 +97,17 @@ const Canvas = () => {
       selectShape(null);
     }
   };
+
+  // const generateURL = () => {
+  //   return stage.toDataURL();
+  // };
+
   return (
     <div className="canvas" id="canvas">
       <div className="canvasArea">
         <Stage
-          width="400"
-          height="400"
+          width="450"
+          height="600"
           onMouseDown={checkDeselect}
           onTouchStart={checkDeselect}
         >

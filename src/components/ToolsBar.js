@@ -16,7 +16,13 @@ const ToolsBar = () => {
       </div>
 
       <div>
-        <button className="toolsBarBtn" id="render">
+        <button
+          onClick={() => {
+            console.log("message");
+          }}
+          className="toolsBarBtn"
+          id="render"
+        >
           Render
         </button>
       </div>

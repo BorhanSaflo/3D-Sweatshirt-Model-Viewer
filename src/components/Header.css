@@ -1,0 +1,9 @@
+.header {
+  grid-area: Header;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background-color: #1c1c1c;
+}

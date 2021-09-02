@@ -1,5 +1,6 @@
 import React from "react";
 import "./ToolsBar.css";
+import PublishIcon from "@material-ui/icons/Publish";
 
 const ToolsBar = () => {
   return (
@@ -11,14 +12,14 @@ const ToolsBar = () => {
           id="fileInput"
         />
         <label for="fileInput" className="toolsBarBtn ">
-          <i class="fas fa-upload"></i>
+          <PublishIcon />
         </label>
       </div>
 
       <div>
         <button
           onClick={() => {
-            console.log("message");
+            console.log("click");
           }}
           className="toolsBarBtn"
           id="render"

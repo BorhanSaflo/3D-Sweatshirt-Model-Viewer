@@ -3,7 +3,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #777777;
+  background-color: var(--secondary-bg-color);
 }
 
 .canvasArea {

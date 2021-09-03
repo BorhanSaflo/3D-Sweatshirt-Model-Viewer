@@ -1,0 +1,21 @@
+.btn {
+  width: 100%;
+  height: 80px;
+  background-color: var(--primary-btn-color);
+  border: none;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 200ms;
+}
+
+.btn:hover {
+  background-color: var(--secondary-btn-color);
+}
+
+input[type="file"] {
+  display: none;
+}

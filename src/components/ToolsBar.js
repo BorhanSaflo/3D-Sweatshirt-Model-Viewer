@@ -1,32 +1,14 @@
 import React from "react";
 import "./ToolsBar.css";
+import Button from "./Button.js";
 import PublishIcon from "@material-ui/icons/Publish";
+import DoneIcon from "@material-ui/icons/Done";
 
 const ToolsBar = () => {
   return (
     <div className="toolsBar">
-      <div>
-        <input
-          className="toolsBarBtn fileUploadBtn"
-          type="file"
-          id="fileInput"
-        />
-        <label for="fileInput" className="toolsBarBtn ">
-          <PublishIcon />
-        </label>
-      </div>
-
-      <div>
-        <button
-          onClick={() => {
-            console.log("click");
-          }}
-          className="toolsBarBtn"
-          id="render"
-        >
-          Render
-        </button>
-      </div>
+      <Button name="Upload" Icon={PublishIcon} isInput />
+      <Button name="Render" Icon={DoneIcon} />
     </div>
   );
 };

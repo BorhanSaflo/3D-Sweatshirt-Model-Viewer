@@ -1,6 +1,6 @@
 .viewer {
   grid-area: Viewer;
-  background-color: #191819;
+  background-color: var(--primary-bg-color);
 }
 
 model-viewer {

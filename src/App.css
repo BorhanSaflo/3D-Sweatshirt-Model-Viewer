@@ -1,3 +1,10 @@
+body {
+  --primary-bg-color: #191819;
+  --secondary-bg-color: #474747;
+  --primary-btn-color: #232223;
+  --secondary-btn-color: #2d2b2d;
+}
+
 * {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;

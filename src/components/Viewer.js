@@ -3,6 +3,8 @@ import "@webcomponents/webcomponentsjs";
 import "@google/model-viewer";
 import "./Viewer.css";
 
+let material;
+
 const Viewer = () => {
   const model1 = useRef();
 
@@ -18,7 +20,7 @@ const Viewer = () => {
         console.log("Model didn't load. Retrying in 1s.");
         checkMaterials();
       } else {
-        let material = model1.current.model.materials[3];
+        material = model1.current.model.materials[3];
 
         let applyPBRTexture = (event) => {
           material.pbrMetallicRoughness[
@@ -46,6 +48,10 @@ const Viewer = () => {
       ></model-viewer>
     </div>
   );
+};
+
+export const applyImageOnModel = (url) => {
+  material.pbrMetallicRoughness["baseColorTexture"].texture.source.setURI(url);
 };
 
 export default Viewer;

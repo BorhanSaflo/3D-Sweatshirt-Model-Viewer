@@ -1,6 +1,0 @@
-.toolsBar {
-  grid-area: ToolsBar;
-  height: 100%;
-  color: #fff;
-  background-color: var(--primary-bg-color);
-}

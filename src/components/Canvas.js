@@ -8,98 +8,97 @@ import DoneIcon from "@material-ui/icons/Done";
 
 import useImage from "use-image";
 
-const Rectangle = ({ shapeProps, isSelected, onSelect, onChange }) => {
-  const shapeRef = React.useRef();
-  const trRef = React.useRef();
+// const Rectangle = ({ shapeProps, isSelected, onSelect, onChange }) => {
+//   const shapeRef = React.useRef();
+//   const trRef = React.useRef();
 
-  React.useEffect(() => {
-    if (isSelected) {
-      // we need to attach transformer manually
-      trRef.current.nodes([shapeRef.current]);
-      trRef.current.getLayer().batchDraw();
-    }
-  }, [isSelected]);
+//   React.useEffect(() => {
+//     if (isSelected) {
+//       // we need to attach transformer manually
+//       trRef.current.nodes([shapeRef.current]);
+//       trRef.current.getLayer().batchDraw();
+//     }
+//   }, [isSelected]);
 
-  return (
-    <React.Fragment>
-      <Rect
-        onClick={onSelect}
-        onTap={onSelect}
-        ref={shapeRef}
-        {...shapeProps}
-        draggable
-        onDragEnd={(e) => {
-          onChange({
-            ...shapeProps,
-            x: e.target.x(),
-            y: e.target.y(),
-          });
-        }}
-        onTransformEnd={(e) => {
-          // transformer is changing scale of the node
-          // and NOT its width or height
-          // but in the store we have only width and height
-          // to match the data better we will reset scale on transform end
-          const node = shapeRef.current;
-          const scaleX = node.scaleX();
-          const scaleY = node.scaleY();
+//   return (
+//     <React.Fragment>
+//       <Rect
+//         onClick={onSelect}
+//         onTap={onSelect}
+//         ref={shapeRef}
+//         {...shapeProps}
+//         draggable
+//         onDragEnd={(e) => {
+//           onChange({
+//             ...shapeProps,
+//             x: e.target.x(),
+//             y: e.target.y(),
+//           });
+//         }}
+//         onTransformEnd={(e) => {
+//           // transformer is changing scale of the node
+//           // and NOT its width or height
+//           // but in the store we have only width and height
+//           // to match the data better we will reset scale on transform end
+//           const node = shapeRef.current;
+//           const scaleX = node.scaleX();
+//           const scaleY = node.scaleY();
 
-          // we will reset it back
-          node.scaleX(1);
-          node.scaleY(1);
-          onChange({
-            ...shapeProps,
-            x: node.x(),
-            y: node.y(),
-            // set minimal value
-            width: Math.max(5, node.width() * scaleX),
-            height: Math.max(node.height() * scaleY),
-          });
-        }}
-      />
-      {isSelected && (
-        <Transformer
-          ref={trRef}
-          boundBoxFunc={(oldBox, newBox) => {
-            // limit resize
-            if (newBox.width < 5 || newBox.height < 5) {
-              return oldBox;
-            }
-            return newBox;
-          }}
-        />
-      )}
-    </React.Fragment>
-  );
-};
+//           // we will reset it back
+//           node.scaleX(1);
+//           node.scaleY(1);
+//           onChange({
+//             ...shapeProps,
+//             x: node.x(),
+//             y: node.y(),
+//             // set minimal value
+//             width: Math.max(5, node.width() * scaleX),
+//             height: Math.max(node.height() * scaleY),
+//           });
+//         }}
+//       />
+//       {isSelected && (
+//         <Transformer
+//           ref={trRef}
+//           boundBoxFunc={(oldBox, newBox) => {
+//             // limit resize
+//             if (newBox.width < 5 || newBox.height < 5) {
+//               return oldBox;
+//             }
+//             return newBox;
+//           }}
+//         />
+//       )}
+//     </React.Fragment>
+//   );
+// };
 
-const initialRectangles = [
-  {
-    x: 10,
-    y: 10,
-    width: 100,
-    height: 100,
-    fill: "red",
-    id: "rect1",
-  },
-  {
-    x: 150,
-    y: 150,
-    width: 100,
-    height: 100,
-    fill: "green",
-    id: "rect2",
-  },
-];
-
+// const initialRectangles = [
+//   {
+//     x: 10,
+//     y: 10,
+//     width: 100,
+//     height: 100,
+//     fill: "red",
+//     id: "rect1",
+//   },
+//   {
+//     x: 150,
+//     y: 150,
+//     width: 100,
+//     height: 100,
+//     fill: "green",
+//     id: "rect2",
+//   },
+// ];
 let url;
 
 const URLImage = ({ image, shapeProps, isSelected, onSelect, onChange }) => {
   const [img] = useImage(image);
-  //return <Image image={img} x={200} y={200} />;
 
   const shapeRef = React.useRef();
   const trRef = React.useRef();
+  const layer = useRef();
 
   React.useEffect(() => {
     if (isSelected) {
@@ -107,76 +106,79 @@ const URLImage = ({ image, shapeProps, isSelected, onSelect, onChange }) => {
       trRef.current.nodes([shapeRef.current]);
       trRef.current.getLayer().batchDraw();
     }
+    generateURL();
   }, [isSelected]);
+
+  const generateURL = () => {
+    url = layer.current.toDataURL();
+  };
 
   return (
     <React.Fragment>
-      <Image
-        image={img}
-        onClick={onSelect}
-        onTap={onSelect}
-        ref={shapeRef}
-        {...shapeProps}
-        draggable
-        onDragEnd={(e) => {
-          // onChange({
-          //   ...shapeProps,
-          //   x: e.target.x(),
-          //   y: e.target.y(),
-          // });
-        }}
-        onTransformEnd={(e) => {
-          // transformer is changing scale of the node
-          // and NOT its width or height
-          // but in the store we have only width and height
-          // to match the data better we will reset scale on transform end
-          const node = shapeRef.current;
-          const scaleX = node.scaleX();
-          const scaleY = node.scaleY();
+      <Layer ref={layer}>
+        <Image
+          image={img}
+          onClick={onSelect}
+          onTap={onSelect}
+          ref={shapeRef}
+          {...shapeProps}
+          draggable
+          onDragEnd={(e) => {
+            onChange({
+              ...shapeProps,
+              x: e.target.x(),
+              y: e.target.y(),
+            });
+          }}
+          onTransformEnd={(e) => {
+            // transformer is changing scale of the node
+            // and NOT its width or height
+            // but in the store we have only width and height
+            // to match the data better we will reset scale on transform end
+            const node = shapeRef.current;
+            const scaleX = node.scaleX();
+            const scaleY = node.scaleY();
 
-          // we will reset it back
-          node.scaleX(1);
-          node.scaleY(1);
-          onChange({
-            ...shapeProps,
-            x: node.x(),
-            y: node.y(),
-            // set minimal value
-            width: Math.max(5, node.width() * scaleX),
-            height: Math.max(node.height() * scaleY),
-          });
-        }}
-      />
-      {isSelected && (
-        <Transformer
-          ref={trRef}
-          boundBoxFunc={(oldBox, newBox) => {
-            // limit resize
-            if (newBox.width < 5 || newBox.height < 5) {
-              return oldBox;
-            }
-            return newBox;
+            onChange({
+              ...shapeProps,
+              x: node.x(),
+              y: node.y(),
+              // set minimal value
+              width: Math.max(5, node.width() * scaleX),
+              height: Math.max(node.height() * scaleY),
+            });
           }}
         />
+      </Layer>
+      {isSelected && (
+        <Layer>
+          <Transformer
+            ref={trRef}
+            boundBoxFunc={(oldBox, newBox) => {
+              // limit resize
+              if (newBox.width < 5 || newBox.height < 5) {
+                return oldBox;
+              }
+              return newBox;
+            }}
+          />
+        </Layer>
       )}
     </React.Fragment>
   );
 };
 
 const Canvas = () => {
-  const generateURL = () => {
-    url = stage.current.toDataURL();
-  };
-
   const stage = useRef();
-
-  useEffect(() => {
-    generateURL();
-  });
-
-  const [rectangles, setRectangles] = React.useState(initialRectangles);
+  const [imagesURL, setImagesURL] = useState([]);
   const [images, setImages] = useState([]);
-  const [selectedId, selectShape] = React.useState(null);
+  const [selectedId, selectShape] = useState(null);
+
+  // useEffect(() => {
+
+  // });
+
+  //const [rectangles, setRectangles] = React.useState(initialRectangles);
 
   const checkDeselect = (e) => {
     // deselect when clicked on empty area
@@ -187,9 +189,16 @@ const Canvas = () => {
   };
 
   const changeHandler = (event) => {
-    var URL = window.webkitURL || window.URL;
     var imgUrl = URL.createObjectURL(event.target.files[0]);
-    setImages([imgUrl]);
+    setImagesURL([...imagesURL, imgUrl]);
+  };
+
+  const exportImage = () => {
+    applyImageOnModel(url);
+  };
+
+  const deselect = () => {
+    selectShape();
   };
 
   return (
@@ -207,7 +216,7 @@ const Canvas = () => {
           </p>
         </label>
 
-        <Button name="Render" Icon={DoneIcon} clickAction={testFunc} />
+        <Button name="Render" Icon={DoneIcon} clickAction={exportImage} />
       </div>
       <div className="canvas" id="canvas">
         <div className="canvasArea">
@@ -218,8 +227,7 @@ const Canvas = () => {
             onTouchStart={checkDeselect}
             ref={stage}
           >
-            <Layer>
-              {rectangles.map((rect, i) => {
+            {/* {rectangles.map((rect, i) => {
                 return (
                   <Rectangle
                     key={i}
@@ -235,37 +243,33 @@ const Canvas = () => {
                     }}
                   />
                 );
-              })}
+              })} */}
 
-              {images &&
-                images.map((image, i) => {
-                  return (
-                    <URLImage
-                      key={i}
-                      image={image}
-                      shapeProps={image}
-                      isSelected={image.id === selectedId}
-                      onSelect={() => {
-                        selectShape(image.id);
-                      }}
-                      onChange={(newAttrs) => {
-                        const imgs = images.slice();
-                        imgs[i] = newAttrs;
-                        setImages(imgs);
-                      }}
-                    />
-                  );
-                })}
-            </Layer>
+            {imagesURL &&
+              imagesURL.map((image, i) => {
+                return (
+                  <URLImage
+                    key={i}
+                    id={i}
+                    image={image}
+                    shapeProps={image}
+                    isSelected={i === selectedId}
+                    onSelect={() => {
+                      selectShape(i);
+                    }}
+                    onChange={(newAttrs) => {
+                      const imgs = images.slice();
+                      imgs[i] = newAttrs;
+                      setImages(imgs);
+                    }}
+                  />
+                );
+              })}
           </Stage>
         </div>
       </div>
     </>
   );
-};
-
-export const testFunc = () => {
-  applyImageOnModel(url);
 };
 
 export default Canvas;

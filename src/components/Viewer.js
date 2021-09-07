@@ -51,7 +51,10 @@ const Viewer = () => {
 };
 
 export const applyImageOnModel = (url) => {
-  material.pbrMetallicRoughness["baseColorTexture"].texture.source.setURI(url);
+  if (material)
+    material.pbrMetallicRoughness["baseColorTexture"].texture.source.setURI(
+      url
+    );
 };
 
 export default Viewer;

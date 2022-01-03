@@ -4,7 +4,7 @@ import "./Header.css";
 const Header = () => {
   return (
     <div className="header">
-      <h2>3D Model Viewer</h2>
+      <h2>Sweatshirt Model Viewer</h2>
     </div>
   );
 };

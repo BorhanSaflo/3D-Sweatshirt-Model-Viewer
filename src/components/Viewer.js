@@ -41,8 +41,8 @@ const Viewer = () => {
     <div className="viewer">
       <model-viewer
         ref={model1}
-        src="/crewneck-sweatshirt.glb"
-        alt="A Crewneck Sweatshirt"
+        src="/sweatshirt.glb"
+        alt="A Sweatshirt"
         shadow-intensity="1"
         camera-controls
       ></model-viewer>
